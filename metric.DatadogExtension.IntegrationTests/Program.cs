@@ -18,7 +18,7 @@ namespace metric.DatadogExtension.IntegrationTests
 
             CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
             HistogramMetric histogramMetric = metrics.Histogram("test", "HealthMetrics.Test.HistogramMetrics");
-            GaugeMetric gaugeMetric = metrics.Gauge("test", "HealthMetrics.Test.GaugeMetrics", () => GetNumberOfUsersLoggedIn);
+            GaugeMetric gaugeMetric = metrics.Gauge("test", "HealthMetrics.Test.GaugeMetrics", GetNumberOfUsersLoggedIn);
             var rand = new Random(1);
 
             int runs = 0;
@@ -40,7 +40,7 @@ namespace metric.DatadogExtension.IntegrationTests
             }
         }
 
-        private long GetNumberOfUsersLoggedIn()
+        private static long GetNumberOfUsersLoggedIn()
         {
             var rand = new Random();
 
