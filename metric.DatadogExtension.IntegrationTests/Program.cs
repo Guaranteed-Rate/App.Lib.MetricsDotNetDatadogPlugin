@@ -13,7 +13,7 @@ namespace metric.DatadogExtension.IntegrationTests
             var metrics = new Metrics();
             //metrics.EnableDataDogReporting(5, TimeUnit.Seconds, "appdev", 8125);
 
-            var reporter = new DataDogReporter(metrics, "appdev", 8125);
+            var reporter = new DataDogReporter(metrics, "appdev", 8125, "ilch1enap04d");
             reporter.Start(5, TimeUnit.Seconds);
 
             CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
