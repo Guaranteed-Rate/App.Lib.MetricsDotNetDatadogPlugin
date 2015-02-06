@@ -1,4 +1,5 @@
-﻿using metrics;
+﻿using metric.DatadogPlugin.Models;
+using metrics;
 using metrics.Core;
 using metrics.Reporting;
 using NUnit.Framework;
@@ -11,17 +12,19 @@ namespace metric.DatadogPlugin
     {
         private readonly Metrics _metrics;
         private readonly string _environmentTag;
+        private readonly string _metricBaseName;
 
-        public DataDogReporter(Metrics metrics, string dataDogAgentServerName, int dataDogListeningPort, string environmentTag)
+        public DataDogReporter(Metrics metrics, DataDogReporterConfigModel dataDogReporterConfigModel)
             : base(new TextMessageWriter(), metrics)
         {
             _metrics = metrics;
-            _environmentTag = environmentTag;
-
+            _environmentTag = dataDogReporterConfigModel.SourceEnvironmentTag;
+            _metricBaseName = BuildMetricBaseName(dataDogReporterConfigModel.SourceApplicationName, dataDogReporterConfigModel.SourceDomainName);            
+            
             var dogStatsdConfig = new StatsdConfig
             {
-                StatsdServerName = dataDogAgentServerName,
-                StatsdPort = dataDogListeningPort,
+                StatsdServerName = dataDogReporterConfigModel.DataDogAgentServerName,
+                StatsdPort = dataDogReporterConfigModel.DataDogListeningPort,
             };
 
             DogStatsd.Configure(dogStatsdConfig);
@@ -53,7 +56,7 @@ namespace metric.DatadogPlugin
             if (counterMetric == null)
                 return false;
 
-            DogStatsd.Counter(metricName.Name, counterMetric.Count, 1, tags);
+            DogStatsd.Counter(_metricBaseName + metricName.Name, counterMetric.Count, 1, tags);
 
             return true;
         }
@@ -66,7 +69,7 @@ namespace metric.DatadogPlugin
 
             foreach (var value in histogramMetric.Values)
             {
-                DogStatsd.Histogram(metricName.Name, value, 1, tags);
+                DogStatsd.Histogram(_metricBaseName + metricName.Name, value, 1, tags);
             }
 
             return true;
@@ -74,9 +77,21 @@ namespace metric.DatadogPlugin
 
         private bool TryLogGauge(MetricName metricName, GaugeMetric metric, string[] tags)
         {
-            DogStatsd.Gauge(metricName.Name, metric.ValueAsString, 1, tags);
+            DogStatsd.Gauge(_metricBaseName + metricName.Name, metric.ValueAsString, 1, tags);
 
             return true;
+        }
+
+        private string BuildMetricBaseName(string applicationName, string domainName)
+        {
+            string metricBaseName = "";
+
+            if (!string.IsNullOrWhiteSpace(applicationName))
+                metricBaseName = applicationName + ".";
+            if (!string.IsNullOrWhiteSpace(domainName))
+                metricBaseName += domainName + ".";
+
+            return metricBaseName;
         }
     }
 }
