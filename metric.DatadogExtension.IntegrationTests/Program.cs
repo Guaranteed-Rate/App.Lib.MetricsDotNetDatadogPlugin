@@ -3,6 +3,7 @@ using System.Threading;
 using metric.DatadogPlugin;
 using metrics;
 using metrics.Core;
+using metric.DatadogPlugin.Models;
 
 namespace metric.DatadogExtension.IntegrationTests
 {
@@ -11,7 +12,8 @@ namespace metric.DatadogExtension.IntegrationTests
         static void Main(string[] args)
         {
             var metrics = new Metrics();
-            var reporter = new DataDogReporter(metrics, "appdev", 8125, "ilch1enap04d");
+            DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
+            var reporter = new DataDogReporter(metrics, dataDogReporterConfigModel);
             reporter.Start(5, TimeUnit.Seconds);
 
             CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
@@ -34,7 +36,7 @@ namespace metric.DatadogExtension.IntegrationTests
 
                 Thread.Sleep(5000);
 
-                runs++;
+               runs++;
             }
         }
 
