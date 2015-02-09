@@ -84,14 +84,10 @@ namespace metric.DatadogPlugin
 
         private string BuildMetricBaseName(string applicationName, string domainName)
         {
-            string metricBaseName = "";
+            if (string.IsNullOrWhiteSpace(applicationName) || string.IsNullOrWhiteSpace(domainName))
+                throw new InvalidMetricNameFormat();                
 
-            if (!string.IsNullOrWhiteSpace(applicationName))
-                metricBaseName = applicationName + ".";
-            if (!string.IsNullOrWhiteSpace(domainName))
-                metricBaseName += domainName + ".";
-
-            return metricBaseName;
+            return string.Format("{0}.{1}.", applicationName, domainName);
         }
     }
 }

@@ -11,32 +11,39 @@ namespace metric.DatadogExtension.IntegrationTests
     {
         static void Main(string[] args)
         {
-            var metrics = new Metrics();
-            DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
-            var reporter = new DataDogReporter(metrics, dataDogReporterConfigModel);
-            reporter.Start(5, TimeUnit.Seconds);
-
-            CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
-            HistogramMetric histogramMetric = metrics.Histogram("test", "HealthMetrics.Test.HistogramMetrics");
-            GaugeMetric gaugeMetric = metrics.Gauge("test", "HealthMetrics.Test.GaugeMetrics", GetNumberOfUsersLoggedIn);
-            var rand = new Random(1);
-
-            int runs = 0;
-            while (runs < 1000)
+            try
             {
-                counter.Increment();
-                counter.Increment();
-                counter.Increment();
+                var metrics = new Metrics();
+                DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
+                var reporter = new DataDogReporter(metrics, dataDogReporterConfigModel);
+                reporter.Start(5, TimeUnit.Seconds);
 
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
+                CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
+                HistogramMetric histogramMetric = metrics.Histogram("test", "HealthMetrics.Test.HistogramMetrics");
+                GaugeMetric gaugeMetric = metrics.Gauge("test", "HealthMetrics.Test.GaugeMetrics", GetNumberOfUsersLoggedIn);
+                var rand = new Random(1);
 
-                Thread.Sleep(5000);
+                int runs = 0;
+                while (runs < 1000)
+                {
+                    counter.Increment();
+                    counter.Increment();
+                    counter.Increment();
 
-               runs++;
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+
+                    Thread.Sleep(5000);
+
+                    runs++;
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
         }
 
