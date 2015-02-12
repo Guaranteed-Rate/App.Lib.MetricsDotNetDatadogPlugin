@@ -50,13 +50,59 @@ namespace metric.DatadogPlugin
             }
         }
 
+        //Dictionary<MetricName, long> _counterPrevValues = new Dictionary<MetricName, long>();
+
+        //private bool TryLogCounter(MetricName metricName, IMetric metric)
+        //{
+        //    var counterMetric = metric as CounterMetric;
+        //    if (counterMetric == null)
+        //        return false;
+
+        //    long valueToLog;
+        //    long previousValue;
+
+        //    if (_counterPrevValues.TryGetValue(metricName, out previousValue))
+        //    {
+        //        valueToLog = counterMetric.Count - previousValue;
+        //        _counterPrevValues[metricName] = counterMetric.Count;
+        //    }
+        //    else
+        //    {
+        //        valueToLog = counterMetric.Count;
+        //        _counterPrevValues.Add(metricName, counterMetric.Count);
+        //    }
+
+        //    DogStatsd.Counter(metricName.Name, valueToLog);
+
+        //    return true;
+        //}
+
+        Dictionary<MetricName, long> _counterPrevValues = new Dictionary<MetricName, long>();
+
         private bool TryLogCounter(MetricName metricName, IMetric metric, string[] tags)
         {
             var counterMetric = metric as CounterMetric;
             if (counterMetric == null)
                 return false;
 
-            DogStatsd.Counter(_metricBaseName + metricName.Name, counterMetric.Count, 1, tags);
+            long valueToLog;
+            long previousValue;
+
+            if (_counterPrevValues.TryGetValue(metricName, out previousValue))
+            {
+                valueToLog = counterMetric.Count - previousValue;
+                _counterPrevValues[metricName] = counterMetric.Count;
+            }
+            else
+            {
+                valueToLog = counterMetric.Count;
+                _counterPrevValues.Add(metricName, counterMetric.Count);
+            }
+
+            DogStatsd.Counter(_metricBaseName + metricName.Name, valueToLog, 1, tags);
+
+            // Set counter to zero so that we're sending the difference, not the total
+            counterMetric.Clear();
 
             return true;
         }
@@ -71,6 +117,8 @@ namespace metric.DatadogPlugin
             {
                 DogStatsd.Histogram(_metricBaseName + metricName.Name, value, 1, tags);
             }
+
+            histogramMetric.Clear();
 
             return true;
         }
