@@ -23,7 +23,7 @@
 //            this.socketTimeout = socketTimeout;
 //        }
 
-//        public ITransport.IRequest Prepare()
+//        public IRequest Prepare()
 //        {
 //            return new HttpRequest(this);
 //        }
@@ -32,7 +32,7 @@
 //        {
 //        }
 
-//        public class HttpRequest : ITransport.IRequest
+//        public class HttpRequest : IRequest
 //        {
 //            protected readonly Serializer serializer;
 

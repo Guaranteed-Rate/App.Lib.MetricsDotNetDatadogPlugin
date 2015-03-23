@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Models.Metrics
 {
-    class DatadogGauge : DatadogSeries
+    public class DatadogGauge : DatadogSeries
     {
-        public DatadogGauge(string name, long count, long epoch, string host, IList<string> additionalTags) 
-            : base(name, count, epoch, host, additionalTags)
+        private readonly double value;
+        public DatadogGauge(string name, double value, long epoch, string host, IList<string> additionalTags) 
+            : base(name, epoch, host, additionalTags)
         {
+            this.value = value;
         }
 
-        /*
-        protected string GetType()
+        public double GetValue()
         {
-            return "gauge";
+            return value;
         }
-         */
+        
     }
 }

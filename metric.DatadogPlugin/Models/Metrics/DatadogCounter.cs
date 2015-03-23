@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Models.Metrics
 {
-    class DatadogCounter : DatadogSeries
+    public class DatadogCounter : DatadogSeries
     {
+        private readonly long count;
         public DatadogCounter(string name, long count, long epoch, string host, IList<string> additionalTags) 
-            : base(name, count, epoch, host, additionalTags)
+            : base(name, epoch, host, additionalTags)
         {
+            this.count = count;
         }
 
-        /*
-        protected string GetType()
+        public long GetCount()
         {
-            return "counter";
+            return count;
         }
-         */
     }
 }

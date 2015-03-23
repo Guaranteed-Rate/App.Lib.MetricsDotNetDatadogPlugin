@@ -13,64 +13,65 @@ namespace metric.DatadogPlugin.Models.Metrics
      * 
      * This is slightly (4 bytes) less memory efficient, but probably not an issue
      */
-    abstract class DatadogSeries
+    public abstract class DatadogSeries
     {
-        //abstract protected string GetType();
+        private readonly string name;
+        private long epoch;
+        private string host;
+        private IList<string> tags;
 
-  private string name;
-  private long count;
-  private long epoch;
-  private string host;
-  private IList<string> tags;
+        // Expect the tags in the pattern
+        // namespace.metricName[tag1:value1,tag2:value2,etc....]
+        private readonly Regex tagPattern = new Regex("([\\w\\.]+)\\[([\\w\\W]+)\\]");
+        private readonly string[] tagSplit = { "\\," };
 
-  // Expect the tags in the pattern
-  // namespace.metricName[tag1:value1,tag2:value2,etc....]
-  private readonly Regex tagPattern = new Regex("([\\w\\.]+)\\[([\\w\\W]+)\\]");
+        public DatadogSeries(string name, long epoch, string host, IList<string> additionalTags)
+        {
+            MatchCollection matcher = tagPattern.Matches(name);
+            this.tags = new List<string>();
+            if (matcher.Count > 0)
+            {
+                this.name = matcher[1].Value;
+                foreach (string t in matcher[2].Value.Split(tagSplit, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    this.tags.Add(t);
+                }
+            }
+            else
+            {
+                this.name = name;
+            }
+            if (additionalTags != null && additionalTags.Count > 0)
+            {
+                foreach (string tag in additionalTags)
+                {
+                    this.tags.Add(tag);
+                }
+            }
+            this.epoch = epoch;
+            this.host = host;
+        }
 
-  public DatadogSeries(string name, long count, long epoch, string host, IList<string> additionalTags) {
-    MatchCollection matcher = tagPattern.Matches(name);
-    this.tags = new List<string>();
-      //FIXME: Return to this
-      /*
-    if (matcher.Count > 0) {
-      this.name = matcher.group(1);
-      for(String t : matcher.group(2).split("\\,")) {
-        this.tags.add(t);
-      }
-    } else {
-      this.name = name;
-    }
-    if(additionalTags != null) {
-      this.tags.addAll(additionalTags);
-    }
-       */
-    this.count = count;
-    this.epoch = epoch;
-    this.host = host;
-  }
+        //@JsonInclude(Include.NON_NULL)
+        public string GetHost()
+        {
+            return host;
+        }
 
-  //@JsonInclude(Include.NON_NULL)
-  public string getHost() {
-    return host;
-  }
+        public string GetMetric()
+        {
+            return name;
+        }
 
-  public string getMetric() {
-    return name;
-  }
+        public IList<string> GetTags()
+        {
+            return tags;
+        }
 
-  public IList<string> getTags() {
-    return tags;
-  }
-
-  public IList<IList<long>> getPoints() {
-    IList<long> point = new List<long>();
-    point.Add(epoch);
-    point.Add(count);
-
-    IList<IList<long>> points = new List<IList<long>>();
-    points.Add(point);
-    return points;
-  }
+        public long GetTimestamp()
+        {
+            return epoch;
+        }
 
         /*
   @Override

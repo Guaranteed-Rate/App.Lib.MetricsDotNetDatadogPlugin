@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin
 {
-    interface IMetricNameFormatter
+    public interface IMetricNameFormatter
     {
         string Format(string name, params string[] path);
     }

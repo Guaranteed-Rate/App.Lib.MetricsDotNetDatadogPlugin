@@ -4,6 +4,7 @@ using metric.DatadogPlugin;
 using metrics;
 using metrics.Core;
 using metric.DatadogPlugin.Models;
+using metric.DatadogPlugin.Models.Transport;
 
 namespace metric.DatadogExtension.IntegrationTests
 {
@@ -14,8 +15,16 @@ namespace metric.DatadogExtension.IntegrationTests
             try
             {
                 var metrics = new Metrics();
-                DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
-                var reporter = new DataDogReporter(metrics, dataDogReporterConfigModel);
+                //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
+
+                UdpTransport.Builder builder = new UdpTransport.Builder();
+                ITransport transport = builder.WithPort(8125)
+                    .WithStatsdHost("appdev")
+                    .Build();
+                string host = "hostName";
+                string[] path = { "ApplicationName", "DomainName" };
+                IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
+                var reporter = new DataDogReporter(metrics, transport, formatter, host, path);
                 reporter.Start(5, TimeUnit.Seconds);
 
                 CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");

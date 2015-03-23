@@ -12,7 +12,7 @@ namespace metric.DatadogPlugin.Models.Transport
     * The call order is expected to be:
     *    one or more of addGauge, addCounter -> send()
     */
-    interface IRequest
+    public interface IRequest
     {
 
         /**

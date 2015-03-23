@@ -58,7 +58,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DataDogReporterTest.cs" />
+    <Compile Include="AppendMetricNameToPathTest.cs" />
+    <Compile Include="DefaultMetricNameFormatterTest.cs" />
+    <Compile Include="HistogramConversionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

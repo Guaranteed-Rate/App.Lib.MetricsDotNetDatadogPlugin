@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Models.Transport
 {
-    interface ITransport
+    public interface ITransport
     {
         /**
         * Build a request context.
