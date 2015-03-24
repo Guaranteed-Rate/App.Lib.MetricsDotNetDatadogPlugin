@@ -39,6 +39,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Metrics.1.0.12\lib\net40\metrics.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -49,6 +52,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,14 +70,12 @@
   <ItemGroup>
     <Compile Include="AppendMetricNameToPathFormatter.cs" />
     <Compile Include="DataDogReporter.cs" />
-    <Compile Include="DatadogReporter2.cs" />
     <Compile Include="DefaultMetricNameFormatter.cs" />
     <Compile Include="Exceptions\InvalidMetricNameFormat.cs" />
     <Compile Include="IDynamicTagsCallback.cs" />
     <Compile Include="IMetricNameFormatter.cs" />
     <Compile Include="Models\Metrics\DatadogCounter.cs" />
     <Compile Include="Models\Metrics\DatadogGauge.cs" />
-    <Compile Include="Models\DataDogReporterConfigModel.cs" />
     <Compile Include="Models\Metrics\DatadogSeries.cs" />
     <Compile Include="Models\Transport\HttpTransport.cs" />
     <Compile Include="Models\Transport\IRequest.cs" />

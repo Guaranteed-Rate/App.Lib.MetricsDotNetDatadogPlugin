@@ -2,6 +2,8 @@
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
+//using System.Net;
+//using System.Net.Mime;
 //using System.Text;
 //using System.Threading.Tasks;
 
@@ -34,14 +36,14 @@
 
 //        public class HttpRequest : IRequest
 //        {
-//            protected readonly Serializer serializer;
+//            protected readonly JavaScriptSerializer serializer;
 
 //            protected readonly HttpTransport transport;
 
 //            public HttpRequest(HttpTransport transport)
 //            {
 //                this.transport = transport;
-//                serializer = new JsonSerializer();
+//                serializer = new JavaScriptSerializer();
 //                serializer.startObject();
 //            }
 
@@ -68,32 +70,22 @@
 //                    sb.Append(postBody);
 //                    Log.Debug(sb.ToString());
 //                }
-//                long start = System.currentTimeMillis();
-//                Response response = Post(this.transport.seriesUrl)
-//                    .useExpectContinue()
-//                    .connectTimeout(this.transport.connectTimeout)
-//                    .socketTimeout(this.transport.socketTimeout)
-//                    .bodyString(postBody, ContentType.APPLICATION_JSON)
-//                    .execute();
-//                long elapsed = System.currentTimeMillis() - start;
+//                DateTime start = System.DateTime.Now;
+//                WebClient client = new WebClient();
+//                byte[] response = client.UploadData(this.transport.seriesUrl, System.Text.Encoding.UTF8.GetBytes(postBody));
+//                string result = System.Text.Encoding.UTF8.GetString(response);
+//                long elapsed = (long)System.DateTime.Now.Subtract(start).TotalMilliseconds;
 
-//                if (LOG.isDebugEnabled())
+//                if (Log.IsDebugEnabled)
 //                {
-//                    HttpResponse httpResponse = response.returnResponse();
+//                    //HttpResponse httpResponse = response.returnResponse();
 //                    StringBuilder sb = new StringBuilder();
 
 //                    sb.Append("Sent metrics to Datadog: ");
-//                    sb.Append("  Timing: ").append(elapsed).append(" ms\n");
-//                    sb.Append("  Status: ").append(httpResponse.getStatusLine().getStatusCode()).append("\n");
-
-//                    string content = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-//                    sb.Append("  Content: ").append(content);
+//                    sb.Append("  Timing: ").Append(elapsed).Append(" ms\n");
+//                    sb.Append("  Status: ").Append(result).Append("\n");
 
 //                    Log.Debug(sb.ToString());
-//                }
-//                else
-//                {
-//                    response.discardContent();
 //                }
 //            }
 

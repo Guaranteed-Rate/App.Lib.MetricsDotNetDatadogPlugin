@@ -17,8 +17,7 @@ namespace metric.DatadogExtension.IntegrationTests
                 var metrics = new Metrics();
                 //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
 
-                UdpTransport.Builder builder = new UdpTransport.Builder();
-                ITransport transport = builder.WithPort(8125)
+                ITransport transport = new UdpTransport.Builder().WithPort(8125)
                     .WithStatsdHost("appdev")
                     .Build();
                 string host = "hostName";
