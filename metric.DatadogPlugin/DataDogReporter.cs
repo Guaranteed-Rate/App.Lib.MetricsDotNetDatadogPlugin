@@ -1,47 +1,26 @@
 ﻿using metric.DatadogPlugin.Models;
-using metric.DatadogPlugin.Models.Metrics;
-using metric.DatadogPlugin.Models.Transport;
 using metrics;
 using metrics.Core;
 using metrics.Reporting;
 using NUnit.Framework;
 using StatsdClient;
-using System;
 using System.Collections.Generic;
 
-/**
- * This code is a C# translation of https://github.com/coursera/metrics-datadog
- * built to work with the C# translation of metrics https://github.com/danielcrenna/metrics-net
- */
 namespace metric.DatadogPlugin
 {
     public class DataDogReporter : ReporterBase
     {
-
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("DataDogReporter");
-        
-        private readonly DateTime unixOffset = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         private readonly Metrics _metrics;
         private readonly string _environmentTag;
-        //private readonly string _metricBaseName;
-        private readonly double[] histogramPercentages = { 0.75, 0.95, 0.98, 0.99, 0.999 };
-        private readonly ITransport transport;
-        private readonly string[] path;
-        private readonly string host;
-        private readonly IMetricNameFormatter formatter;
+        private readonly string _metricBaseName;
 
-        public DataDogReporter(Metrics metrics, ITransport transport, IMetricNameFormatter formatter, string host, string[] path)
+        public DataDogReporter(Metrics metrics, DataDogReporterConfigModel dataDogReporterConfigModel)
             : base(new TextMessageWriter(), metrics)
         {
-            this._metrics = metrics;
-            this.host = host;
-            this.path = path;
-            //this._environmentTag = dataDogReporterConfigModel.SourceEnvironmentTag;
-            //this._metricBaseName = BuildMetricBaseName(dataDogReporterConfigModel.SourceApplicationName, dataDogReporterConfigModel.SourceDomainName);
-            this.transport = transport;
-            this.formatter = formatter;
-
-            /*
+            _metrics = metrics;
+            _environmentTag = dataDogReporterConfigModel.SourceEnvironmentTag;
+            _metricBaseName = BuildMetricBaseName(dataDogReporterConfigModel.SourceApplicationName, dataDogReporterConfigModel.SourceDomainName);            
+            
             var dogStatsdConfig = new StatsdConfig
             {
                 StatsdServerName = dataDogReporterConfigModel.DataDogAgentServerName,
@@ -49,87 +28,108 @@ namespace metric.DatadogPlugin
             };
 
             DogStatsd.Configure(dogStatsdConfig);
-             */
         }
 
         public override void Run()
         {
-            IRequest request = this.transport.Prepare();
-
             string[] tags = null;
 
             if (!string.IsNullOrEmpty(_environmentTag))
                 tags = new List<string>() { string.Format("environment: {0}", _environmentTag) }.ToArray();
 
-            long timestamp = (long)(DateTime.UtcNow.Subtract(unixOffset).TotalSeconds);
-
-
-
             foreach (var dictEntry in _metrics.All)
             {
-                if (dictEntry.Value is CounterMetric)
-                {
-                    LogCounter(request, dictEntry.Key, (CounterMetric)dictEntry.Value, timestamp, tags);
-                }
-                else if (dictEntry.Value is HistogramMetric)
-                {
-                    LogHistogram(request, dictEntry.Key, (HistogramMetric)dictEntry.Value, timestamp, tags);
-                }
-                else if (dictEntry.Value is MeterMetric)
-                {
-                }
-                else if (dictEntry.Value is TimerMetric)
-                {
-                }
-                else if (dictEntry.Value is GaugeMetric)
-                {
-                    LogGauge(request, dictEntry.Key, (GaugeMetric)dictEntry.Value, timestamp, tags);
-                }
-                else
-                {
-                    Log.InfoFormat("Unknown metric type {}, not sending", dictEntry.Value.GetType());
-                }
+                if (TryLogCounter(dictEntry.Key, dictEntry.Value, tags))
+                    continue;
 
+                if (TryLogHistogram(dictEntry.Key, dictEntry.Value, tags))
+                    continue;
+
+                if (dictEntry.Value is GaugeMetric)
+                    TryLogGauge(dictEntry.Key, (GaugeMetric)dictEntry.Value, tags);
             }
         }
 
+        //Dictionary<MetricName, long> _counterPrevValues = new Dictionary<MetricName, long>();
+
+        //private bool TryLogCounter(MetricName metricName, IMetric metric)
+        //{
+        //    var counterMetric = metric as CounterMetric;
+        //    if (counterMetric == null)
+        //        return false;
+
+        //    long valueToLog;
+        //    long previousValue;
+
+        //    if (_counterPrevValues.TryGetValue(metricName, out previousValue))
+        //    {
+        //        valueToLog = counterMetric.Count - previousValue;
+        //        _counterPrevValues[metricName] = counterMetric.Count;
+        //    }
+        //    else
+        //    {
+        //        valueToLog = counterMetric.Count;
+        //        _counterPrevValues.Add(metricName, counterMetric.Count);
+        //    }
+
+        //    DogStatsd.Counter(metricName.Name, valueToLog);
+
+        //    return true;
+        //}
+
         Dictionary<MetricName, long> _counterPrevValues = new Dictionary<MetricName, long>();
 
-        private void LogCounter(IRequest request, MetricName metricName, CounterMetric counterMetric, long timestamp, string[] tags) 
+        private bool TryLogCounter(MetricName metricName, IMetric metric, string[] tags)
         {
-            request.AddCounter(new DatadogCounter(formatter.Format(metricName.Name, path), counterMetric.Count, timestamp, host, tags));
+            var counterMetric = metric as CounterMetric;
+            if (counterMetric == null)
+                return false;
+
+            long valueToLog;
+            long previousValue;
+
+            if (_counterPrevValues.TryGetValue(metricName, out previousValue))
+            {
+                valueToLog = counterMetric.Count - previousValue;
+                _counterPrevValues[metricName] = counterMetric.Count;
+            }
+            else
+            {
+                valueToLog = counterMetric.Count;
+                _counterPrevValues.Add(metricName, counterMetric.Count);
+            }
+
+            DogStatsd.Counter(_metricBaseName + metricName.Name, valueToLog, 1, tags);
+
+            // Set counter to zero so that we're sending the difference, not the total
+            counterMetric.Clear();
+
+            return true;
         }
 
-        private void LogHistogram(IRequest request, MetricName metricName, HistogramMetric histogramMetric, long timestamp, string[] tags)
+        private bool TryLogHistogram(MetricName metricName, IMetric metric, string[] tags)
         {
-            LogGauge(request, metricName.Name + ".Max", histogramMetric.SampleMax, timestamp, tags);
-            LogGauge(request, metricName.Name + ".Min", histogramMetric.SampleMin, timestamp, tags);
-            LogGauge(request, metricName.Name + ".Mean", histogramMetric.SampleMean, timestamp, tags);
-            LogGauge(request, metricName.Name + ".StdDev", histogramMetric.StdDev, timestamp, tags);
-            LogGauge(request, metricName.Name + ".Count", histogramMetric.SampleCount, timestamp, tags);
+            var histogramMetric = metric as HistogramMetric;
+            if (histogramMetric == null)
+                return false;
 
-            double[] percentResults = histogramMetric.Percentiles(histogramPercentages);
-            LogGauge(request, metricName.Name + ".75Percent", percentResults[0], timestamp, tags);
-            LogGauge(request, metricName.Name + ".95Percent", percentResults[1], timestamp, tags);
-            LogGauge(request, metricName.Name + ".98Percent", percentResults[2], timestamp, tags);
-            LogGauge(request, metricName.Name + ".99Percent", percentResults[3], timestamp, tags);
-            LogGauge(request, metricName.Name + ".999Percent", percentResults[4], timestamp, tags);
+            foreach (var value in histogramMetric.Values)
+            {
+                DogStatsd.Histogram(_metricBaseName + metricName.Name, value, 1, tags);
+            }
 
             histogramMetric.Clear();
 
+            return true;
         }
 
-        private void LogGauge(IRequest request, MetricName metricName, GaugeMetric metric, long timestamp, string[] tags)
+        private bool TryLogGauge(MetricName metricName, GaugeMetric metric, string[] tags)
         {
-            LogGauge(request, metricName.Name, System.Convert.ToInt64(metric.ValueAsString), timestamp, tags);
+            DogStatsd.Gauge(_metricBaseName + metricName.Name, metric.ValueAsString, 1, tags);
+
+            return true;
         }
 
-        private void LogGauge(IRequest request, string metricName, double value, long timestamp, string[] tags)
-        {
-            request.AddGauge(new DatadogGauge(formatter.Format(metricName, path), value, timestamp, host, tags));
-        }
-
-        /*
         private string BuildMetricBaseName(string applicationName, string domainName)
         {
             if (string.IsNullOrWhiteSpace(applicationName) || string.IsNullOrWhiteSpace(domainName))
@@ -137,7 +137,5 @@ namespace metric.DatadogPlugin
 
             return string.Format("{0}.{1}.", applicationName, domainName);
         }
-         */
     }
-
 }
