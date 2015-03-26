@@ -39,11 +39,10 @@ namespace metric.DatadogPlugin.Tests
         public void BracketNameFormatTest()
         {
             IMetricNameFormatter formatter = new DefaultMetricNameFormatter();
-            string name = "\\[hi]\\[how]\\[are]\\[you]";
+            string name = "this.is.strange[hi][how][are][you]";
             string[] parameters = { "one", "two", "three" };
             string formatValue = formatter.Format(name, parameters);
-            //Bug?
-            Assert.AreEqual("hi].one.two.three[how][are][you]", formatValue);
+            Assert.AreEqual("this.is.strange.one.two.three[hi][how][are][you]", formatValue);
         }
     }
 }

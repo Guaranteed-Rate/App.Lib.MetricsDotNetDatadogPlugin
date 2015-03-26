@@ -22,7 +22,8 @@ namespace metric.DatadogExtension.IntegrationTests
                     .Build();
                 string host = "hostName";
                 string[] path = { "ApplicationName", "DomainName" };
-                IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
+                //IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
+                IMetricNameFormatter formatter = new DefaultMetricNameFormatter();
                 var reporter = new DataDogReporter(metrics, transport, formatter, host, path);
                 reporter.Start(5, TimeUnit.Seconds);
 
@@ -34,6 +35,7 @@ namespace metric.DatadogExtension.IntegrationTests
                 int runs = 0;
                 while (runs < 1000)
                 {
+                    System.Console.WriteLine("Loop " + (runs++) + " of 1000");
                     counter.Increment();
                     counter.Increment();
                     counter.Increment();
@@ -46,7 +48,6 @@ namespace metric.DatadogExtension.IntegrationTests
 
                     Thread.Sleep(5000);
 
-                    runs++;
                 }
             }
             catch(Exception e)
