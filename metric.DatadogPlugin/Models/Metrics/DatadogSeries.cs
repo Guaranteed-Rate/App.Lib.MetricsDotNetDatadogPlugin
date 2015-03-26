@@ -8,108 +8,69 @@ using System.Threading.Tasks;
 namespace metric.DatadogPlugin.Models.Metrics
 {
     /**
-     * Change here from the java version - java is using generics to allow DatadogCounter to store data as longs
-     * and guages as ints.  However the technique doesn't directly translate to C# so I'm just having both use longs.
+     * Change here from the java version - java is using generics to allow DatadogCounter to store data as 
+     * any numeric (in this case long or double) but C# inheritance is different.
      * 
-     * This is slightly (4 bytes) less memory efficient, but probably not an issue
+     * For a first version using a less elegant soultion of having the implementing class handle the data.
      */
     public abstract class DatadogSeries
     {
-        private readonly string name;
-        private long epoch;
-        private string host;
-        private IList<string> tags;
+        public string _name { get; private set; }
+        public long _epoch { get; private set; }
+        public string _host { get; private set; }
+        public IList<string> _tags { get; private set; }
 
         // Expect the tags in the pattern
         // namespace.metricName[tag1:value1,tag2:value2,etc....]
-        private readonly Regex tagPattern = new Regex("([\\w\\.]+)\\[([\\w\\W]+)\\]");
-        private readonly string[] tagSplit = { "\\," };
+        private readonly Regex _tagPattern = new Regex("([\\w\\.]+)\\[([\\w\\W]+)\\]");
+        private readonly string[] _tagSplit = { "," };
 
         public DatadogSeries(string name, long epoch, string host, IList<string> additionalTags)
         {
-            MatchCollection matcher = tagPattern.Matches(name);
-            this.tags = new List<string>();
+            MatchCollection matcher = _tagPattern.Matches(name);
+            this._tags = new List<string>();
             if (matcher.Count > 0)
             {
-                this.name = matcher[1].Value;
-                foreach (string t in matcher[2].Value.Split(tagSplit, StringSplitOptions.RemoveEmptyEntries))
+                this._name = matcher[1].Value;
+                foreach (string t in matcher[2].Value.Split(_tagSplit, StringSplitOptions.None))
                 {
-                    this.tags.Add(t);
+                    this._tags.Add(t);
                 }
             }
             else
             {
-                this.name = name;
+                this._name = name;
             }
             if (additionalTags != null && additionalTags.Count > 0)
             {
                 foreach (string tag in additionalTags)
                 {
-                    this.tags.Add(tag);
+                    this._tags.Add(tag);
                 }
             }
-            this.epoch = epoch;
-            this.host = host;
+            this._epoch = epoch;
+            this._host = host;
         }
 
-        //@JsonInclude(Include.NON_NULL)
         public string GetHost()
         {
-            return host;
+            return _host;
         }
 
         public string GetMetric()
         {
-            return name;
+            return _name;
         }
 
         public IList<string> GetTags()
         {
-            return tags;
+            return _tags;
         }
 
         public long GetTimestamp()
         {
-            return epoch;
+            return _epoch;
         }
 
-        /*
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof DatadogSeries)) return false;
-
-    DatadogSeries that = (DatadogSeries) o;
-
-    if (!count.equals(that.count)) return false;
-    if (!epoch.equals(that.epoch)) return false;
-    if (!host.equals(that.host)) return false;
-    if (!name.equals(that.name)) return false;
-    if (!tags.equals(that.tags)) return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = name.hashCode();
-    result = 31 * result + count.hashCode();
-    result = 31 * result + epoch.hashCode();
-    result = 31 * result + host.hashCode();
-    result = 31 * result + tags.hashCode();
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "DatadogSeries{" +
-        "name='" + name + '\'' +
-        ", count=" + count +
-        ", epoch=" + epoch +
-        ", host='" + host + '\'' +
-        ", tags=" + tags +
-        '}';
-  }
-         */
     }
 }

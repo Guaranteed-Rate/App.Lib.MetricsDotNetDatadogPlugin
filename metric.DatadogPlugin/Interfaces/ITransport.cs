@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Models.Transport
+namespace metric.DatadogPlugin.Interfaces
 {
     public interface ITransport
     {

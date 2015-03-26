@@ -1,4 +1,5 @@
-﻿using metric.DatadogPlugin.Models.Metrics;
+﻿using metric.DatadogPlugin.Interfaces;
+using metric.DatadogPlugin.Models.Metrics;
 using StatsdClient;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,8 @@ namespace metric.DatadogPlugin.Models.Transport
 {
     public class UdpTransport : ITransport
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("UdpTransport");
-        private readonly IDictionary<string, long> lastSeenCounters = new Dictionary<string, long>();
-        private readonly double sampleRate;
+        private readonly IDictionary<string, long> _lastSeenCounters = new Dictionary<string, long>();
+        private readonly double _sampleRate;
 
         private UdpTransport(string prefix, string statsdHost, int port, string[] globalTags, double sampleRate) {
 
@@ -24,7 +24,7 @@ namespace metric.DatadogPlugin.Models.Transport
             };
 
             DogStatsd.Configure(dogStatsdConfig);
-            this.sampleRate = sampleRate;
+            this._sampleRate = sampleRate;
         }
 
         public void close()
@@ -65,20 +65,18 @@ namespace metric.DatadogPlugin.Models.Transport
 
         public IRequest Prepare()
         {
-            return new DogstatsdRequest(lastSeenCounters, sampleRate);
+            return new DogstatsdRequest(_lastSeenCounters, _sampleRate);
         }
 
         public class DogstatsdRequest : IRequest
         {
-            //private readonly StatsDClient statsdClient;
-            private readonly IDictionary<string, long> lastSeenCounters;
-            private readonly double sampleRate;
+            private readonly IDictionary<string, long> _lastSeenCounters;
+            private readonly double _sampleRate;
 
             public DogstatsdRequest(IDictionary<string, long> lastSeenCounters, double sampleRate)
             {
-                //this.statsdClient = statsdClient;
-                this.lastSeenCounters = lastSeenCounters;
-                this.sampleRate = sampleRate;
+                this._lastSeenCounters = lastSeenCounters;
+                this._sampleRate = sampleRate;
             }
 
             /**
@@ -86,18 +84,8 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddGauge(DatadogGauge gauge)
             {
-                /*
-                if (gauge.getPoints().Count > 1)
-                {
-                    Log.Debug("Gauge " + gauge.getMetric() + " has more than one data point, " +
-                        "will pick the first point only");
-                }
-                double value = gauge.getPoints().ElementAt(0).ElementAt(1);
-                 */
-
                 string[] tags = gauge.GetTags().ToArray();
-                DogStatsd.Gauge(gauge.GetMetric(), gauge.GetValue(), sampleRate, tags);
-                //DogStatsd.Gauge(_metricBaseName + metricName.Name, metric.ValueAsString, 1, tags);
+                DogStatsd.Gauge(gauge.GetMetric(), gauge._value, _sampleRate, tags);
             }
 
             /**
@@ -105,14 +93,6 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddCounter(DatadogCounter counter)
             {
-                /*
-                if (counter.getPoints().Count > 1)
-                {
-                    Log.Debug("Counter " + counter.getMetric() + " has more than one data point, " +
-                        "will pick the first point only");
-                }
-                long value = counter.getPoints().ElementAt(0).ElementAt(1);
-                 */
                 string[] tags = counter.GetTags().ToArray();
                 StringBuilder sb = new StringBuilder("");
                 for (int i = tags.Length - 1; i >= 0; i--)
@@ -126,20 +106,20 @@ namespace metric.DatadogPlugin.Models.Transport
 
                 string metric = counter.GetMetric();
                 string readonlyMetricsSeenName = metric + ":" + sb.ToString();
-                long rawValue = counter.GetCount();
+                long rawValue = counter._value;
                 long readonlyValue = rawValue;
-                if (lastSeenCounters.ContainsKey(readonlyMetricsSeenName))
+                if (_lastSeenCounters.ContainsKey(readonlyMetricsSeenName))
                 {
                     // If we've seen this counter before then calculate the difference
                     // by subtracting the new value from the old. StatsD expects a relative
                     // counter, not an absolute!
-                    readonlyValue = Math.Max(0, rawValue - lastSeenCounters[readonlyMetricsSeenName]);
+                    readonlyValue = Math.Max(0, rawValue - _lastSeenCounters[readonlyMetricsSeenName]);
                 }
                 // Store the last value we saw so that the next addCounter call can make
                 // the proper relative value
-                lastSeenCounters.Add(readonlyMetricsSeenName, rawValue);
+                _lastSeenCounters.Add(readonlyMetricsSeenName, rawValue);
 
-                DogStatsd.Counter(metric, readonlyValue, sampleRate, tags);
+                DogStatsd.Counter(metric, readonlyValue, _sampleRate, tags);
             }
 
             /**

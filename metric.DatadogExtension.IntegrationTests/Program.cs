@@ -5,6 +5,7 @@ using metrics;
 using metrics.Core;
 using metric.DatadogPlugin.Models;
 using metric.DatadogPlugin.Models.Transport;
+using metric.DatadogPlugin.Interfaces;
 
 namespace metric.DatadogExtension.IntegrationTests
 {

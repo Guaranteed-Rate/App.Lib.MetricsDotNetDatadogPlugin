@@ -1,4 +1,5 @@
-﻿using metric.DatadogPlugin.Models;
+﻿using metric.DatadogPlugin.Interfaces;
+using metric.DatadogPlugin.Models;
 using metric.DatadogPlugin.Models.Metrics;
 using metric.DatadogPlugin.Models.Transport;
 using metrics;

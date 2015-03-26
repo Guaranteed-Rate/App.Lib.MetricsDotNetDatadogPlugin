@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin
+namespace metric.DatadogPlugin.Interfaces
 {
-    public interface IMetricNameFormatter
+    interface IDynamicTagsCallback
     {
-        string Format(string name, params string[] path);
+        IList<string> GetTags();
     }
 }
