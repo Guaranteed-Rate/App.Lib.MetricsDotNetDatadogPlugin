@@ -42,9 +42,25 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.util">
+      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NUnit.VisualStudio.TestAdapter">
+      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="StatsdClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f641b6aa3c3157d1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -68,13 +84,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppendMetricNameToPathFormatter.cs" />
+    <Compile Include="Formatters\AppendMetricNameToPathFormatter.cs" />
     <Compile Include="DataDogReporter.cs" />
-    <Compile Include="DefaultMetricNameFormatter.cs" />
+    <Compile Include="Formatters\DefaultMetricNameFormatter.cs" />
     <Compile Include="Exceptions\InvalidMetricNameFormat.cs" />
     <Compile Include="Interfaces\IDynamicTagsCallback.cs" />
     <Compile Include="Interfaces\IMetricNameFormatter.cs" />
     <Compile Include="Models\Metrics\DatadogCounter.cs" />
+    <Compile Include="Models\Metrics\DatadogEvent.cs" />
     <Compile Include="Models\Metrics\DatadogGauge.cs" />
     <Compile Include="Models\Metrics\DatadogSeries.cs" />
     <Compile Include="Models\Transport\HttpTransport.cs" />

@@ -1,17 +1,18 @@
-﻿using metric.DatadogPlugin.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using metric.DatadogPlugin.Formatters;
+using metric.DatadogPlugin.Interfaces;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests
+namespace metric.DatadogPlugin.Tests.Formatters
 {
-    [TestClass]
+    [TestFixture]
     public class AppendMetricNameToPathTest
     {
-        [TestMethod]
+        [Test]
         public void SimpleAppendMetricNameToPath()
         {
             IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
@@ -24,7 +25,7 @@ namespace metric.DatadogPlugin.Tests
             Assert.AreEqual("domain.app.MetricName", formatter.Format(name, path));
         }
 
-        [TestMethod]
+        [Test]
         public void SeperatorAppendMetricNameToPath()
         {
             IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter("-");

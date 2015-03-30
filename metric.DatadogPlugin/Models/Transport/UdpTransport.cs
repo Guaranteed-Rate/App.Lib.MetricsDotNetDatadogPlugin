@@ -11,6 +11,10 @@ namespace metric.DatadogPlugin.Models.Transport
 {
     public class UdpTransport : ITransport
     {
+        /**
+         * Datadog's native client expects counters to be sent as deltas from the previous value.
+         * The RESTful http client expects counters to be sent as current value.
+         */
         private readonly IDictionary<string, long> _lastSeenCounters = new Dictionary<string, long>();
         private readonly double _sampleRate;
 
@@ -84,8 +88,8 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddGauge(DatadogGauge gauge)
             {
-                string[] tags = gauge.GetTags().ToArray();
-                DogStatsd.Gauge(gauge.GetMetric(), gauge._value, _sampleRate, tags);
+                string[] tags = gauge._tags.ToArray();
+                DogStatsd.Gauge(gauge._name, gauge._value, _sampleRate, tags);
             }
 
             /**
@@ -93,7 +97,7 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddCounter(DatadogCounter counter)
             {
-                string[] tags = counter.GetTags().ToArray();
+                string[] tags = counter._tags.ToArray();
                 StringBuilder sb = new StringBuilder("");
                 for (int i = tags.Length - 1; i >= 0; i--)
                 {
@@ -104,7 +108,7 @@ namespace metric.DatadogPlugin.Models.Transport
                     }
                 }
 
-                string metric = counter.GetMetric();
+                string metric = counter._name;
                 string readonlyMetricsSeenName = metric + ":" + sb.ToString();
                 long rawValue = counter._value;
                 long readonlyValue = rawValue;
@@ -120,6 +124,11 @@ namespace metric.DatadogPlugin.Models.Transport
                 _lastSeenCounters.Add(readonlyMetricsSeenName, rawValue);
 
                 DogStatsd.Counter(metric, readonlyValue, _sampleRate, tags);
+            }
+
+            public void AddEvent(DatadogEvent datadogEvent) {
+                //TODO: TBD
+                //DogStatsd.Event(title, text, alertType, aggregationKey, sourceType, dateHappened, priority, hostname, tags);
             }
 
             /**

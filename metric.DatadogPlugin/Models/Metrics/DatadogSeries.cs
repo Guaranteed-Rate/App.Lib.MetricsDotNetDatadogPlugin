@@ -17,46 +17,42 @@ namespace metric.DatadogPlugin.Models.Metrics
     {
         public string _name { get; private set; }
         public long _epoch { get; private set; }
-        public string _host { get; private set; }
+        //public string _host { get; private set; }
         public IList<string> _tags { get; private set; }
 
         // Expect the tags in the pattern
         // namespace.metricName[tag1:value1,tag2:value2,etc....]
-        private readonly Regex _tagPattern = new Regex("([\\w\\.]+)\\[([\\w\\W]+)\\]");
         private readonly string[] _tagSplit = { "," };
 
-        public DatadogSeries(string name, long epoch, string host, IList<string> additionalTags)
+        public DatadogSeries(string name, long epoch, IDictionary<string,string> additionalTags)
         {
-            MatchCollection matcher = _tagPattern.Matches(name);
             this._tags = new List<string>();
-            if (matcher.Count > 0)
+            if (!name.Contains("["))
             {
-                this._name = matcher[1].Value;
-                foreach (string t in matcher[2].Value.Split(_tagSplit, StringSplitOptions.None))
+                this._name = name;
+            }
+            else
+            {
+                int index = name.IndexOf("[", 0);
+                this._name = name.Substring(0, index);
+                string tags = name.Substring(index + 1, name.Length - index - 2);
+                foreach (string t in tags.Split(_tagSplit, StringSplitOptions.None))
                 {
                     this._tags.Add(t);
                 }
             }
-            else
-            {
-                this._name = name;
-            }
             if (additionalTags != null && additionalTags.Count > 0)
             {
-                foreach (string tag in additionalTags)
+                foreach (string tag in additionalTags.Keys)
                 {
-                    this._tags.Add(tag);
+                    this._tags.Add(tag + ":" + additionalTags[tag]);
                 }
             }
             this._epoch = epoch;
-            this._host = host;
+            //this._host = host;
         }
 
-        public string GetHost()
-        {
-            return _host;
-        }
-
+        /*
         public string GetMetric()
         {
             return _name;
@@ -71,6 +67,6 @@ namespace metric.DatadogPlugin.Models.Metrics
         {
             return _epoch;
         }
-
+        */
     }
 }

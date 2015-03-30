@@ -1,17 +1,18 @@
-﻿using metric.DatadogPlugin.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using metric.DatadogPlugin.Formatters;
+using metric.DatadogPlugin.Interfaces;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests
+namespace metric.DatadogPlugin.Tests.Formatters
 {
-    [TestClass]
+    [TestFixture]
     public class DefaultMetricNameFormatterTest
     {
-        [TestMethod]
+        [Test]
         public void SimpleNameFormatTest()
         {
             IMetricNameFormatter formatter = new DefaultMetricNameFormatter();
@@ -25,7 +26,7 @@ namespace metric.DatadogPlugin.Tests
             Assert.AreEqual("hi.one", formatValue);
         }
 
-        [TestMethod]
+        [Test]
         public void ComplexNameFormatTest()
         {
             IMetricNameFormatter formatter = new DefaultMetricNameFormatter();
@@ -36,7 +37,7 @@ namespace metric.DatadogPlugin.Tests
             Assert.AreEqual("hi.how.are.you.one.two.three", formatValue);
         }
 
-        [TestMethod]
+        [Test]
         public void BracketNameFormatTest()
         {
             IMetricNameFormatter formatter = new DefaultMetricNameFormatter();

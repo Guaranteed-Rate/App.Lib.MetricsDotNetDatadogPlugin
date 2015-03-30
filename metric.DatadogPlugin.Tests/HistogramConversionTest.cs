@@ -1,6 +1,6 @@
 ﻿using metrics;
 using metrics.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class HistogramConversionTest
     {
         
-        [TestMethod]
+        [Test]
         public void HistogramPercentages()
         {
             Metrics metrics = new Metrics();

@@ -26,6 +26,12 @@ namespace metric.DatadogPlugin.Interfaces
         void AddCounter(DatadogCounter counter);
 
         /**
+         * Add an event - this doesn't directly translate to a metric but it's useful 
+         * functionality that is worth including.
+         */
+        void AddEvent(DatadogEvent datadogEvent);
+
+        /**
         * Send the request to datadog
         */
         void Send();
