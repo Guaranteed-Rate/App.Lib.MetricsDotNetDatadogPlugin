@@ -102,14 +102,14 @@ namespace metric.DatadogPlugin
 
         private void LogTimer(IRequest request, MetricName metricName, TimerMetric metric, long timestamp)
         {
-            LogGauge(request, metricName.Name + ".FifteenMinuteRate", metric.FifteenMinuteRate, timestamp);
-            LogGauge(request, metricName.Name + ".FiveMinuteRate", metric.FiveMinuteRate, timestamp);
-            LogGauge(request, metricName.Name + ".OneMinuteRate", metric.OneMinuteRate, timestamp);
-            LogGauge(request, metricName.Name + ".Max", metric.Max, timestamp);
-            LogGauge(request, metricName.Name + ".Mean", metric.Mean, timestamp);
-            LogGauge(request, metricName.Name + ".MeanRate", metric.MeanRate, timestamp);
-            LogGauge(request, metricName.Name + ".Min", metric.Min, timestamp);
-            LogGauge(request, metricName.Name + ".StdDev", metric.StdDev, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.FifteenMinuteRate.GetDatadogName(), metric.FifteenMinuteRate, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.FiveMinuteRate.GetDatadogName(), metric.FiveMinuteRate, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.OneMinuteRate.GetDatadogName(), metric.OneMinuteRate, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.Max.GetDatadogName(), metric.Max, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.Mean.GetDatadogName(), metric.Mean, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.MeanRate.GetDatadogName(), metric.MeanRate, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.Min.GetDatadogName(), metric.Min, timestamp);
+            LogGauge(request, metricName.Name + "." + TimerMetrics.StdDev.GetDatadogName(), metric.StdDev, timestamp);
         }
 
         private void LogMeter(IRequest request, MetricName metricName, MeterMetric metric, long timestamp)
@@ -124,18 +124,18 @@ namespace metric.DatadogPlugin
 
         private void LogHistogram(IRequest request, MetricName metricName, HistogramMetric metric, long timestamp)
         {
-            LogGauge(request, metricName.Name + ".Max", metric.SampleMax, timestamp);
-            LogGauge(request, metricName.Name + ".Min", metric.SampleMin, timestamp);
-            LogGauge(request, metricName.Name + ".Mean", metric.SampleMean, timestamp);
-            LogGauge(request, metricName.Name + ".StdDev", metric.StdDev, timestamp);
-            LogGauge(request, metricName.Name + ".Count", metric.SampleCount, timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.Max.GetDatadogName(), metric.SampleMax, timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.Min.GetDatadogName(), metric.SampleMin, timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.Mean.GetDatadogName(), metric.SampleMean, timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.StdDev.GetDatadogName(), metric.StdDev, timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.Count.GetDatadogName(), metric.SampleCount, timestamp);
 
             double[] percentResults = metric.Percentiles(histogramPercentages);
-            LogGauge(request, metricName.Name + ".75Percent", percentResults[0], timestamp);
-            LogGauge(request, metricName.Name + ".95Percent", percentResults[1], timestamp);
-            LogGauge(request, metricName.Name + ".98Percent", percentResults[2], timestamp);
-            LogGauge(request, metricName.Name + ".99Percent", percentResults[3], timestamp);
-            LogGauge(request, metricName.Name + ".999Percent", percentResults[4], timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.At75thPercentile.GetDatadogName(), percentResults[0], timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.At95thPercentile.GetDatadogName(), percentResults[1], timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.At98thPercentile.GetDatadogName(), percentResults[2], timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.At99thPercentile.GetDatadogName(), percentResults[3], timestamp);
+            LogGauge(request, metricName.Name + "." + HistogramMetrics.At999thPercentile.GetDatadogName(), percentResults[4], timestamp);
 
             metric.Clear();
 

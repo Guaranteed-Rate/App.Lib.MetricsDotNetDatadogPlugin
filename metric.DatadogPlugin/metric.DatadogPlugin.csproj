@@ -90,10 +90,12 @@
     <Compile Include="Exceptions\InvalidMetricNameFormat.cs" />
     <Compile Include="Interfaces\IDynamicTagsCallback.cs" />
     <Compile Include="Interfaces\IMetricNameFormatter.cs" />
+    <Compile Include="Models\Metrics\TimerMetrics.cs" />
     <Compile Include="Models\Metrics\DatadogCounter.cs" />
     <Compile Include="Models\Metrics\DatadogEvent.cs" />
     <Compile Include="Models\Metrics\DatadogGauge.cs" />
     <Compile Include="Models\Metrics\DatadogSeries.cs" />
+    <Compile Include="Models\Metrics\HistogramMetrics.cs" />
     <Compile Include="Models\Transport\HttpTransport.cs" />
     <Compile Include="Interfaces\IRequest.cs" />
     <Compile Include="Interfaces\ITransport.cs" />

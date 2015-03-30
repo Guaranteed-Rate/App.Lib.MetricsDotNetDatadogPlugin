@@ -94,6 +94,7 @@
     <Compile Include="Formatters\DefaultMetricNameFormatterTest.cs" />
     <Compile Include="HistogramConversionTest.cs" />
     <Compile Include="Models\Metrics\DatadogSeriesTest.cs" />
+    <Compile Include="Models\Transport\TestRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
