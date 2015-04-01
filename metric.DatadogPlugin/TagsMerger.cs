@@ -10,7 +10,8 @@ namespace metric.DatadogPlugin
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("TagsMerger");
 
-        private static readonly string[] tagDelim = { ":" };
+        private static readonly string[] _tagDelim = { ":" };
+
         /**
          *
          * @param tags1 list of tags, each tag should be in the format of "key:value"
@@ -51,7 +52,7 @@ namespace metric.DatadogPlugin
 
         private static void ParseTag(string tag, IDictionary<string, string> map)
         {
-            string[] strs = tag.Split(tagDelim, StringSplitOptions.RemoveEmptyEntries);
+            string[] strs = tag.Split(_tagDelim, StringSplitOptions.RemoveEmptyEntries);
             if (strs.Length != 2)
             {
                 Log.Warn("Invalid tag: " + tag);

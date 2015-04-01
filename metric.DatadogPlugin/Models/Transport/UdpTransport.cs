@@ -88,8 +88,8 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddGauge(DatadogGauge gauge)
             {
-                string[] tags = gauge._tags.ToArray();
-                DogStatsd.Gauge(gauge._name, gauge._value, _sampleRate, tags);
+                string[] tags = gauge.Tags.ToArray();
+                DogStatsd.Gauge(gauge.Name, gauge.Value, _sampleRate, tags);
             }
 
             /**
@@ -97,7 +97,7 @@ namespace metric.DatadogPlugin.Models.Transport
              */
             public void AddCounter(DatadogCounter counter)
             {
-                string[] tags = counter._tags.ToArray();
+                string[] tags = counter.Tags.ToArray();
                 StringBuilder sb = new StringBuilder("");
                 for (int i = tags.Length - 1; i >= 0; i--)
                 {
@@ -108,9 +108,9 @@ namespace metric.DatadogPlugin.Models.Transport
                     }
                 }
 
-                string metric = counter._name;
+                string metric = counter.Name;
                 string readonlyMetricsSeenName = metric + ":" + sb.ToString();
-                long rawValue = counter._value;
+                long rawValue = counter.Value;
                 long readonlyValue = rawValue;
                 if (_lastSeenCounters.ContainsKey(readonlyMetricsSeenName))
                 {

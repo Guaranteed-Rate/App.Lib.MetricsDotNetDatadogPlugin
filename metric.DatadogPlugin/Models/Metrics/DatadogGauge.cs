@@ -8,11 +8,11 @@ namespace metric.DatadogPlugin.Models.Metrics
 {
     public class DatadogGauge : DatadogSeries
     {
-        public double _value { get; private set; }
+        public double Value { get; private set; }
         public DatadogGauge(string name, double value, long epoch, IDictionary<string, string> additionalTags) 
             : base(name, epoch, additionalTags)
         {
-            this._value = value;
+            this.Value = value;
         }
 
     }

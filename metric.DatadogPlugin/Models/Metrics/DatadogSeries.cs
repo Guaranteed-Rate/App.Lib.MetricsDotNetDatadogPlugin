@@ -15,10 +15,9 @@ namespace metric.DatadogPlugin.Models.Metrics
      */
     public abstract class DatadogSeries
     {
-        public string _name { get; private set; }
-        public long _epoch { get; private set; }
-        //public string _host { get; private set; }
-        public IList<string> _tags { get; private set; }
+        public string Name { get; private set; }
+        public long Epoch { get; private set; }
+        public IList<string> Tags { get; private set; }
 
         // Expect the tags in the pattern
         // namespace.metricName[tag1:value1,tag2:value2,etc....]
@@ -26,29 +25,29 @@ namespace metric.DatadogPlugin.Models.Metrics
 
         public DatadogSeries(string name, long epoch, IDictionary<string,string> additionalTags)
         {
-            this._tags = new List<string>();
+            this.Tags = new List<string>();
             if (!name.Contains("["))
             {
-                this._name = name;
+                this.Name = name;
             }
             else
             {
                 int index = name.IndexOf("[", 0);
-                this._name = name.Substring(0, index);
+                this.Name = name.Substring(0, index);
                 string tags = name.Substring(index + 1, name.Length - index - 2);
                 foreach (string t in tags.Split(_tagSplit, StringSplitOptions.None))
                 {
-                    this._tags.Add(t);
+                    this.Tags.Add(t);
                 }
             }
             if (additionalTags != null && additionalTags.Count > 0)
             {
                 foreach (string tag in additionalTags.Keys)
                 {
-                    this._tags.Add(tag + ":" + additionalTags[tag]);
+                    this.Tags.Add(tag + ":" + additionalTags[tag]);
                 }
             }
-            this._epoch = epoch;
+            this.Epoch = epoch;
             //this._host = host;
         }
 

@@ -10,21 +10,21 @@ namespace metric.DatadogPlugin.Tests.Models.Transport
 {
     public class TestRequest : IRequest
     {
-        public IDictionary<string, DatadogSeries> _metrics { get; private set; }
+        public IDictionary<string, DatadogSeries> Metrics { get; private set; }
 
         public TestRequest()
         {
-            this._metrics = new Dictionary<string, DatadogSeries>();
+            this.Metrics = new Dictionary<string, DatadogSeries>();
         }
 
         public void AddGauge(DatadogGauge gauge)
         {
-            _metrics.Add(gauge._name, gauge);
+            Metrics.Add(gauge.Name, gauge);
         }
 
         public void AddCounter(DatadogCounter counter)
         {
-            _metrics.Add(counter._name, counter);
+            Metrics.Add(counter.Name, counter);
         }
 
         public void AddEvent(DatadogEvent datadogEvent)

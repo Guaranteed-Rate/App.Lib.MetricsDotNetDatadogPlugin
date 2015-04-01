@@ -20,7 +20,7 @@ namespace metric.DatadogPlugin.Tests.Models.Metrics
 
             DatadogCounter counter = new DatadogCounter(
                 "test[tag1:value1,tag2:value2,tag3:value3]", 1L, 1234L, tags);
-            IList<string> allTags = counter._tags;
+            IList<string> allTags = counter.Tags;
 
             Assert.AreEqual(5, allTags.Count);
             Assert.AreEqual("tag1:value1", allTags[0]);

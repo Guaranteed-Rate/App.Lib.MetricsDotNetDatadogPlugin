@@ -36,7 +36,7 @@ namespace metric.DatadogPlugin.Models.Metrics
             At999thPercentile
         };
 
-        private string _name;
+        private readonly string _name;
         HistogramMetrics(string name)
         {
             this._name = name;
