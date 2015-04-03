@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Interfaces
+namespace GuaranteedRate.Metric.DatadogPlugin.Interfaces
 {
     interface IDynamicTagsCallback
     {

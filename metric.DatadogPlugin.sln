@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metric.DatadogPlugin", "metric.DatadogPlugin\metric.DatadogPlugin.csproj", "{6FFA0A57-8225-4709-BAED-1FE8221AAF46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Metric.DatadogPlugin", "metric.DatadogPlugin\GuaranteedRate.Metric.DatadogPlugin.csproj", "{6FFA0A57-8225-4709-BAED-1FE8221AAF46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metric.DatadogExtension.IntegrationTests", "metric.DatadogExtension.IntegrationTests\metric.DatadogExtension.IntegrationTests.csproj", "{46ED7C6C-29A6-49D1-BACA-1E22E69DAC9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Metric.DatadogExtension.IntegrationTests", "metric.DatadogExtension.IntegrationTests\GuaranteedRate.Metric.DatadogExtension.IntegrationTests.csproj", "{46ED7C6C-29A6-49D1-BACA-1E22E69DAC9A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7448CA40-E6D1-4ADD-A10E-BE224DEA93A1}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7448CA
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metric.DatadogPlugin.Tests", "metric.DatadogPlugin.Tests\metric.DatadogPlugin.Tests.csproj", "{8D3C48C1-F1DA-4EFA-A69F-CCC2A4858FF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Metric.DatadogPlugin.Tests", "metric.DatadogPlugin.Tests\GuaranteedRate.Metric.DatadogPlugin.Tests.csproj", "{8D3C48C1-F1DA-4EFA-A69F-CCC2A4858FF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

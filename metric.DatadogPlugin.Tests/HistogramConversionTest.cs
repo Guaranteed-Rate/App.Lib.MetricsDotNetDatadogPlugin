@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests
+namespace GuaranteedRate.Metric.DatadogPlugin.Tests
 {
     [TestFixture]
     public class HistogramConversionTest

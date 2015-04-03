@@ -6,7 +6,7 @@
     <ProjectGuid>{8D3C48C1-F1DA-4EFA-A69F-CCC2A4858FF9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>metric.DatadogPlugin.Tests</RootNamespace>
+    <RootNamespace>GuaranteedRate.Metrics.DatadogPlugin.Tests</RootNamespace>
     <AssemblyName>metric.DatadogPlugin.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -87,9 +87,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\metric.DatadogPlugin\metric.DatadogPlugin.csproj">
+    <ProjectReference Include="..\metric.DatadogPlugin\GuaranteedRate.Metric.DatadogPlugin.csproj">
       <Project>{6ffa0a57-8225-4709-baed-1fe8221aaf46}</Project>
-      <Name>metric.DatadogPlugin</Name>
+      <Name>GuaranteedRate.Metric.DatadogPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

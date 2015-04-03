@@ -1,4 +1,4 @@
-﻿using metric.DatadogPlugin.Models.Metrics;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Models.Metrics;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests.Models.Metrics
+namespace GuaranteedRate.Metric.DatadogPlugin.Tests.Models.Metrics
 {
     [TestFixture]
     public class DatadogSeriesTest

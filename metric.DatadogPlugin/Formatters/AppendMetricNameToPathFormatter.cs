@@ -1,4 +1,4 @@
-﻿using metric.DatadogPlugin.Interfaces;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
  *  path[] = { "path","dir","subdir"}
  *  returns "path.dir.subdir.this.is.a.name[with:some][tag:stuff]"
  */
-namespace metric.DatadogPlugin.Formatters
+namespace GuaranteedRate.Metric.DatadogPlugin.Formatters
 {
     public class AppendMetricNameToPathFormatter : IMetricNameFormatter
     {

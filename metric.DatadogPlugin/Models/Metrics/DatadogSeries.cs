@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Models.Metrics
+namespace GuaranteedRate.Metric.DatadogPlugin.Models.Metrics
 {
     /**
      * Change here from the java version - java is using generics to allow DatadogCounter to store data as 
