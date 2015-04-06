@@ -36,6 +36,8 @@ var reporter = new DataDogReporter(metrics, transport, formatter, environment, h
 reporter.Start(5, TimeUnit.Seconds);
 ...
 
+~~~~
+
 ## Nuget Info
 
 *Metrics.net* and *DogStats-CSharp Client* are available as artifacts on nuget
