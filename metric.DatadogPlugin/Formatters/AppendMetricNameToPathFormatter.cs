@@ -5,31 +5,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/**
- * This formatter assumes the name is in the format:
- * this.is.a.name[with:some][tag:stuff]
- * It will append the values in name AFTER the path
- * 
- * ex:
- *  name = "this.is.a.name[with:some][tag:stuff]"
- *  path[] = { "path","dir","subdir"}
- *  returns "path.dir.subdir.this.is.a.name[with:some][tag:stuff]"
- */
+
 namespace GuaranteedRate.Metric.DatadogPlugin.Formatters
 {
+    /// <summary>
+    /// This formatter assumes the name is in the format:
+    /// this.is.a.name[with:some][tag:stuff]
+    /// It will append the values in name AFTER the path
+    /// 
+    /// ex:
+    ///  name = "this.is.a.name[with:some][tag:stuff]"
+    ///  path[] = { "path","dir","subdir"}
+    ///  returns "path.dir.subdir.this.is.a.name[with:some][tag:stuff]"
+    /// </summary>
     public class AppendMetricNameToPathFormatter : IMetricNameFormatter
     {
-        public const string DEFAULT_SEPERATOR  = ".";
-        private readonly string _seperator;
+        public const string DEFAULT_SEPARATOR  = ".";
+        private readonly string _separator;
 
-        public AppendMetricNameToPathFormatter(string seperator)
+        public AppendMetricNameToPathFormatter(string separator)
         {
-            this._seperator = seperator;
+            _separator = separator;
         }
 
         public AppendMetricNameToPathFormatter()
         {
-            this._seperator = AppendMetricNameToPathFormatter.DEFAULT_SEPERATOR;
+            _separator = AppendMetricNameToPathFormatter.DEFAULT_SEPARATOR;
         }
 
         public string Format(string name, params string[] path)
@@ -46,7 +47,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Formatters
 
             foreach (string piece in path)
             {
-                sb.Append(piece).Append(_seperator);
+                sb.Append(piece).Append(_separator);
             }
             sb.Append(name);
             return sb.ToString();

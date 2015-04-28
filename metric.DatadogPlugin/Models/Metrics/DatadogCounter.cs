@@ -9,6 +9,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Models.Metrics
     public class DatadogCounter : DatadogSeries
     {
         public long Value { get; private set; }
+
         public DatadogCounter(string name, long value, long epoch, IDictionary<string, string> additionalTags) 
             : base(name, epoch, additionalTags)
         {

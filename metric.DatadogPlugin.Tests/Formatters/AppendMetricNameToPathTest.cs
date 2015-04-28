@@ -26,7 +26,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Tests.Formatters
         }
 
         [Test]
-        public void SeperatorAppendMetricNameToPath()
+        public void SeparatorAppendMetricNameToPath()
         {
             IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter("-");
             string name = "MetricName";

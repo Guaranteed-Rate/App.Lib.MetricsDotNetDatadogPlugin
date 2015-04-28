@@ -38,7 +38,7 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
                 CounterMetric counter = metrics.Counter("test", "CounterMetric");
                 HistogramMetric histogramMetric = metrics.Histogram("test", "HistogramMetric");
                 GaugeMetric gaugeMetric = metrics.Gauge("test", "GaugeMetric", GetNumberOfUsersLoggedIn);
-                var rand = new Random(System.DateTime.Now.Millisecond);
+                var rand = new Random();
 
                 int runs = 0;
                 while (runs < 1000)

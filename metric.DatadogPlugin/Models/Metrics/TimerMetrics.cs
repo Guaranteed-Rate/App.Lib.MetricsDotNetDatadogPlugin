@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/**
- * Reference class to help convert Metrics Histogram
- * names to Datadog style names
- */
 namespace GuaranteedRate.Metric.DatadogPlugin.Models.Metrics
 {
+    /// <summary>
+    /// Reference class to help convert Metrics Histogram
+    /// names to Datadog style names
+    /// </summary>
     public class TimerMetrics
     {
         public static readonly TimerMetrics Max = new TimerMetrics("max");

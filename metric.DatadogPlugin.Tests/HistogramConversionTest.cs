@@ -12,14 +12,14 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Tests
     [TestFixture]
     public class HistogramConversionTest
     {
-        
         [Test]
         public void HistogramPercentages()
         {
             Metrics metrics = new Metrics();
             HistogramMetric histogramMetric = metrics.Histogram("test", "HealthMetrics.Test.HistogramMetrics");
 
-            for (int x = 1; x <= 100; x++) { 
+            for (int x = 1; x <= 100; x++)
+            {
                 histogramMetric.Update(x);
             }
 
@@ -33,8 +33,6 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Tests
             Assert.AreEqual(75, results[0], 1);
             Assert.AreEqual(99, results[1], 1);
             Assert.AreEqual(99, results[2], 1);
-
         }
-
     }
 }
