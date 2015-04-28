@@ -7,33 +7,35 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Interfaces
 {
-    /**
-    * A request for batching of metrics to be pushed to datadog.
-    * The call order is expected to be:
-    *    one or more of addGauge, addCounter -> send()
-    */
+    /// <summary>
+    /// A request for batching of metrics to be pushed to datadog.
+    /// The call order is expected to be:
+    /// one or more of addGauge, addCounter -> send()
+    /// </summary>
     public interface IRequest
     {
-
-        /**
-        * Add a gauge
-        */
+        /// <summary>
+        /// Add a gauge to the request
+        /// </summary>
+        /// <param name="gauge">The gauge to add</param>
         void AddGauge(DatadogGauge gauge);
 
-        /**
-        * Add a counter to the request
-        */
+        /// <summary>
+        /// Add a counter to the request
+        /// </summary>
+        /// <param name="counter">The counter to add</param>
         void AddCounter(DatadogCounter counter);
 
-        /**
-         * Add an event - this doesn't directly translate to a metric but it's useful 
-         * functionality that is worth including.
-         */
+        /// <summary>
+        /// Add an event to the request - this doesn't directly translate to a metric but it's useful 
+        /// functionality that is worth including.
+        /// </summary> 
+        /// <param name="datadogEvent">The event to add</param>
         void AddEvent(DatadogEvent datadogEvent);
 
-        /**
-        * Send the request to datadog
-        */
+        /// <summary>
+        /// Send the request to DataDog
+        /// </summary>
         void Send();
     }
 }

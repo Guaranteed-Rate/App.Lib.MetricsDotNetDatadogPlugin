@@ -28,23 +28,23 @@ namespace metric.DatadogPlugin.Models.Metrics
             this.Tags = new List<string>();
             if (!name.Contains("["))
             {
-                this.Name = name;
+                Name = name;
             }
             else
             {
                 int index = name.IndexOf("[", 0);
-                this.Name = name.Substring(0, index);
+                Name = name.Substring(0, index);
                 string tags = name.Substring(index + 1, name.Length - index - 2);
                 foreach (string t in tags.Split(_tagSplit, StringSplitOptions.None))
                 {
-                    this.Tags.Add(t);
+                    Tags.Add(t);
                 }
             }
             if (additionalTags != null && additionalTags.Count > 0)
             {
                 foreach (string tag in additionalTags.Keys)
                 {
-                    this.Tags.Add(tag + ":" + additionalTags[tag]);
+                    Tags.Add(tag + ":" + additionalTags[tag]);
                 }
             }
             this.Epoch = epoch;

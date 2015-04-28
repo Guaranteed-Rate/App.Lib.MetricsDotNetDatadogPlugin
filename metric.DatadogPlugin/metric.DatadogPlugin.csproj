@@ -73,10 +73,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\InvalidMetricNameFormatException.cs" />
     <Compile Include="Formatters\AppendMetricNameToPathFormatter.cs" />
     <Compile Include="DataDogReporter.cs" />
     <Compile Include="Formatters\DefaultMetricNameFormatter.cs" />
-    <Compile Include="Exceptions\InvalidMetricNameFormat.cs" />
     <Compile Include="Interfaces\IDynamicTagsCallback.cs" />
     <Compile Include="Interfaces\IMetricNameFormatter.cs" />
     <Compile Include="Models\Metrics\TimerMetrics.cs" />

@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Threading;
 using metric.DatadogPlugin;
+using metric.DatadogPlugin.Formatters;
+using metric.DatadogPlugin.Interfaces;
+using metric.DatadogPlugin.Models.Transport;
 using metrics;
 using metrics.Core;
-using metric.DatadogPlugin.Models;
-
-using metric.DatadogPlugin.Models.Transport;
-
-using metric.DatadogPlugin.Interfaces;
-
-using metric.DatadogPlugin.Formatters;
-
-using System.Collections.Generic;
 
 namespace metric.DatadogExtension.IntegrationTests
 {
@@ -24,10 +18,7 @@ namespace metric.DatadogExtension.IntegrationTests
                 var metrics = new Metrics();
                 //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
 
-
-
                 ITransport transport = new UdpTransport.Builder().WithPort(8125)
-
                     .WithStatsdHost("appdev")
                     .Build();
 
@@ -47,7 +38,7 @@ namespace metric.DatadogExtension.IntegrationTests
                 CounterMetric counter = metrics.Counter("test", "CounterMetric");
                 HistogramMetric histogramMetric = metrics.Histogram("test", "HistogramMetric");
                 GaugeMetric gaugeMetric = metrics.Gauge("test", "GaugeMetric", GetNumberOfUsersLoggedIn);
-                var rand = new Random(System.DateTime.Now.Millisecond);
+                var rand = new Random();
 
                 int runs = 0;
                 while (runs < 1000)
@@ -65,7 +56,6 @@ namespace metric.DatadogExtension.IntegrationTests
                     histogramMetric.Update(rand.Next(100));
 
                     Thread.Sleep(5000);
-
                 }
             }
             catch(Exception e)

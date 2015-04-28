@@ -22,7 +22,6 @@ namespace metric.DatadogPlugin.Tests
         public const string APP = "TestApp";
         public const string DOMAIN = "TestDomain";
 
-
         [Test]
         public void MetricConverterTest()
         {

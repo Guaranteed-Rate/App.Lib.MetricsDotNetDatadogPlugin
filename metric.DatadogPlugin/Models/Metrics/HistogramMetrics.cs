@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/**
- * Reference class to help convert Metrics Histogram
- * names to Datadog style names
- */
 namespace metric.DatadogPlugin.Models.Metrics
 {
+    /// <summary>
+    /// Reference class to help convert Metrics Histogram
+    /// names to Datadog style names
+    /// </summary>
     public class HistogramMetrics
     {
         public static readonly HistogramMetrics Max = new HistogramMetrics("max");
@@ -39,7 +39,7 @@ namespace metric.DatadogPlugin.Models.Metrics
         private readonly string _name;
         HistogramMetrics(string name)
         {
-            this._name = name;
+            _name = name;
         }
 
         public string GetDatadogName() {
