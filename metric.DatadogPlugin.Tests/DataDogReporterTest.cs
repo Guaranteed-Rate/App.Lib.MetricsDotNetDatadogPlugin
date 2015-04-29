@@ -22,7 +22,6 @@ namespace metric.DatadogPlugin.Tests
         public const string APP = "TestApp";
         public const string DOMAIN = "TestDomain";
 
-
         [Test]
         public void MetricConverterTest()
         {
@@ -134,11 +133,9 @@ namespace metric.DatadogPlugin.Tests
         private void ValidateDefaultTags(IList<string> tags)
         {
             Assert.AreEqual(2, tags.Count);
-            foreach (string tag in tags) {
-                if (!tag.Equals(DataDogReporter.ENVIRONMENT_TAG + ":" + ENVIRONMENT) && !tag.Equals(DataDogReporter.HOST_TAG + ":" + HOST)) 
-                {
-                    Assert.IsTrue(false);
-                }
+            foreach (string tag in tags) 
+            {
+                Assert.IsTrue(tag.Equals(DataDogReporter.ENVIRONMENT_TAG + ":" + ENVIRONMENT) || tag.Equals(DataDogReporter.HOST_TAG + ":" + HOST)); 
             }
         }
 

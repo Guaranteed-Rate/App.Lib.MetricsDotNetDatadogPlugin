@@ -7,19 +7,17 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin.Formatters
 {
+    /// <summary>
+    /// This formatter assumes the name is in the format:
+    /// this.is.a.name[with:some][tag:stuff]
+    /// It will append the values in path after the '.' separated fields, and before the [] fields
+    /// ex:
+    /// name = "this.is.a.name[with:some][tag:stuff]"
+    /// path[] = { "path","dir","subdir"}
+    /// returns "this.is.a.name.path.dir.subdir[with:some][tag:stuff]"
+    /// </summary>
     public class DefaultMetricNameFormatter : IMetricNameFormatter
     {
-
-        /**
-         * This formatter assumes the name is in the format:
-         * this.is.a.name[with:some][tag:stuff]
-         * It will append the values in path after the '.' seperated fields, and before the [] fields
-         * 
-         * ex:
-         *  name = "this.is.a.name[with:some][tag:stuff]"
-         *  path[] = { "path","dir","subdir"}
-         *  returns "this.is.a.name.path.dir.subdir[with:some][tag:stuff]"
-         */
         public string Format(string name, params string[] path) {
             StringBuilder sb = new StringBuilder();
             string[] pattern = new string[1];

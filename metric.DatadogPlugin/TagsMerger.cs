@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace metric.DatadogPlugin
 {
-    class TagsMerger
+    static class TagsMerger
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("TagsMerger");
 
         private static readonly string[] _tagDelim = { ":" };
 
-        /**
-         *
-         * @param tags1 list of tags, each tag should be in the format of "key:value"
-         * @param tags2 list of tags, each tag should be in the format of "key:value"
-         * @return merged tags list. If there is duplicated key, tags in tags2 will overwrite tags
-         * in tags1, and tags in the back of the list will overwrite tags in the front of the list.
-         */
+        /// <summary>
+        /// Merge two lists of tags. If there is duplicated key, tags in tags2 will overwrite tags
+        /// in tags1, and tags in the back of the list will overwrite tags in the front of the list.
+        /// </summary>
+        /// <param name="tags1">List of tags, each tag should be in the format of "key:value"</param>
+        /// <param name="tags2">List of tags, each tag should be in the format of "key:value"</param>
+        /// <returns>Merged tags list</returns>
         public static IList<string> MergeTags(IList<string> tags1, IList<string> tags2)
         {
             if (tags1 == null || tags1.Count == 0)
