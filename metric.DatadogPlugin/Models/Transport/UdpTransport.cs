@@ -1,5 +1,5 @@
-﻿using metric.DatadogPlugin.Interfaces;
-using metric.DatadogPlugin.Models.Metrics;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
+using GuaranteedRate.Metric.DatadogPlugin.Models.Metrics;
 using StatsdClient;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Models.Transport
+namespace GuaranteedRate.Metric.DatadogPlugin.Models.Transport
 {
     public class UdpTransport : ITransport
     {

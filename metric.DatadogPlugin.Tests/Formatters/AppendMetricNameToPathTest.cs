@@ -1,5 +1,5 @@
-﻿using metric.DatadogPlugin.Formatters;
-using metric.DatadogPlugin.Interfaces;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Formatters;
+using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests.Formatters
+namespace GuaranteedRate.Metric.DatadogPlugin.Tests.Formatters
 {
     [TestFixture]
     public class AppendMetricNameToPathTest

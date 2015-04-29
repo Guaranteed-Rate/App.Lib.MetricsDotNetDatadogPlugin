@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Models.Metrics
+namespace GuaranteedRate.Metric.DatadogPlugin.Models.Metrics
 {
     public class DatadogEvent
     {

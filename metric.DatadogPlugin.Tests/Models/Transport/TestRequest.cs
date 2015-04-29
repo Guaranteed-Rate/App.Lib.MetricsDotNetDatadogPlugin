@@ -1,12 +1,12 @@
-﻿using metric.DatadogPlugin.Interfaces;
-using metric.DatadogPlugin.Models.Metrics;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
+using GuaranteedRate.Metric.DatadogPlugin.Models.Metrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Tests.Models.Transport
+namespace GuaranteedRate.Metric.DatadogPlugin.Tests.Models.Transport
 {
     public class TestRequest : IRequest
     {

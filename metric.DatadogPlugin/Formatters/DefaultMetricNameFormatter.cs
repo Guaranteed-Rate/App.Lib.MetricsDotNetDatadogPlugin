@@ -1,11 +1,11 @@
-﻿using metric.DatadogPlugin.Interfaces;
+﻿using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metric.DatadogPlugin.Formatters
+namespace GuaranteedRate.Metric.DatadogPlugin.Formatters
 {
     public class DefaultMetricNameFormatter : IMetricNameFormatter
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
  * Reference class to help convert Metrics Histogram
  * names to Datadog style names
  */
-namespace metric.DatadogPlugin.Models.Metrics
+namespace GuaranteedRate.Metric.DatadogPlugin.Models.Metrics
 {
     public class TimerMetrics
     {

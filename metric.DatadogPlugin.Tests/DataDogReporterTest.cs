@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using metrics.Core;
-using metric.DatadogPlugin.Interfaces;
-using metric.DatadogPlugin.Formatters;
+using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
+using GuaranteedRate.Metric.DatadogPlugin.Formatters;
 using metrics;
-using metric.DatadogPlugin.Models.Transport;
-using metric.DatadogPlugin.Tests.Models.Transport;
-using metric.DatadogPlugin.Models.Metrics;
+using GuaranteedRate.Metric.DatadogPlugin.Models.Transport;
+using GuaranteedRate.Metric.DatadogPlugin.Tests.Models.Transport;
+using GuaranteedRate.Metric.DatadogPlugin.Models.Metrics;
 
-namespace metric.DatadogPlugin.Tests
+namespace GuaranteedRate.Metric.DatadogPlugin.Tests
 {
     [TestFixture]
     public class DataDogReporterTest
