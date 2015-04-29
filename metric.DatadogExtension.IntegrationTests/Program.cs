@@ -20,7 +20,6 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
                 var metrics = new Metrics();
                 //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
 
-
                 ITransport transport = new UdpTransport.Builder().WithPort(8125)
                     .WithStatsdHost("appdev")
                     .Build();
@@ -43,7 +42,6 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
                 int runs = 0;
                 while (runs < 1000)
                 {
-
                     System.Console.WriteLine("Loop " + (runs++) + " of 1000");
                     counter.Increment();
                     counter.Increment();
@@ -60,7 +58,7 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
             }
             catch(Exception e)
             {
-                throw e;
+                throw;
             }
         }
 
