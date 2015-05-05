@@ -20,7 +20,6 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
                 var metrics = new Metrics();
                 //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
 
-
                 ITransport transport = new UdpTransport.Builder().WithPort(8125)
                     .WithStatsdHost("appdev")
                     .Build();
@@ -38,12 +37,11 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
                 CounterMetric counter = metrics.Counter("test", "CounterMetric");
                 HistogramMetric histogramMetric = metrics.Histogram("test", "HistogramMetric");
                 GaugeMetric gaugeMetric = metrics.Gauge("test", "GaugeMetric", GetNumberOfUsersLoggedIn);
-                var rand = new Random(System.DateTime.Now.Millisecond);
+                var rand = new Random();
 
                 int runs = 0;
                 while (runs < 1000)
                 {
-
                     System.Console.WriteLine("Loop " + (runs++) + " of 1000");
                     counter.Increment();
                     counter.Increment();
@@ -60,7 +58,7 @@ namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
             }
             catch(Exception e)
             {
-                throw e;
+                throw;
             }
         }
 

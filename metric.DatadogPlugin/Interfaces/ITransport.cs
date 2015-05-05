@@ -9,11 +9,10 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Interfaces
 {
     public interface ITransport
     {
-        /**
-        * Build a request context.
-        */
+        /// <summary>
+        /// Build a request context
+        /// </summary>
+        /// <returns>The created request context</returns>
         IRequest Prepare();
-
-
     }
 }

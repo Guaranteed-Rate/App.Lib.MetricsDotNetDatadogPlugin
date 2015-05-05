@@ -9,7 +9,6 @@ using NUnit.Framework;
 using StatsdClient;
 using System;
 using System.Collections.Generic;
-
 /**
  * This code is a C# translation of https://github.com/coursera/metrics-datadog
  * built to work with the C# translation of metrics https://github.com/danielcrenna/metrics-net
@@ -24,40 +23,42 @@ namespace GuaranteedRate.Metric.DatadogPlugin
         public const string ENVIRONMENT_TAG = "environment";
         public const string HOST_TAG = "host";
 
-        private readonly DateTime unixOffset = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        private readonly metrics.Metrics _metrics;
+        private readonly DateTime _unixOffset = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        private readonly Metrics _metrics;
         private readonly IDictionary<string, string> _globalTags;
-        private readonly double[] histogramPercentages = { 0.75, 0.95, 0.98, 0.99, 0.999 };
-        private readonly ITransport transport;
-        private readonly string[] path;
-        private readonly IMetricNameFormatter formatter;
+        private readonly double[] _histogramPercentages = { 0.75, 0.95, 0.98, 0.99, 0.999 };
+        private readonly ITransport _transport;
+        private readonly string[] _path;
+        private readonly IMetricNameFormatter _nameFormatter;
 
         public DataDogReporter(Metrics metrics, ITransport transport, IMetricNameFormatter formatter, IDictionary<string, string> globalTags, string[] path)
             : base(new TextMessageWriter(), metrics)
         {
-            this._metrics = metrics;
-            this._globalTags = globalTags;
-            this.path = path;
-            this.transport = transport;
-            this.formatter = formatter;
+            _metrics = metrics;
+            _globalTags = globalTags;
+            _path = path;
+            _transport = transport;
+            _nameFormatter = formatter;
         }
 
         public DataDogReporter(Metrics metrics, ITransport transport, IMetricNameFormatter formatter, string environment, string host, string[] path)
             : base(new TextMessageWriter(), metrics)
         {
-            this._metrics = metrics;
-            this.path = path;
-            this.transport = transport;
-            this.formatter = formatter;
-            this._globalTags = new Dictionary<string, string>();
+            _metrics = metrics;
+            _path = path;
+            _transport = transport;
+            _nameFormatter = formatter;
+            _globalTags = new Dictionary<string, string>();
             _globalTags.Add(ENVIRONMENT_TAG, environment);
             _globalTags.Add(HOST_TAG, host);
         }
 
         public override void Run()
         {
-            IRequest request = this.transport.Prepare();
-            long timestamp = (long)(DateTime.UtcNow.Subtract(unixOffset).TotalSeconds);
+            IRequest request = this._transport.Prepare();
+
+            long timestamp = (long)(DateTime.UtcNow.Subtract(_unixOffset).TotalSeconds);
+
             TransformMetrics(request, _metrics, timestamp);
         }
 
@@ -110,12 +111,12 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 
         private void LogMeter(IRequest request, MetricName metricName, MeterMetric metric, long timestamp)
         {
-            request.AddCounter(new DatadogCounter(formatter.Format(metricName.Name, path), metric.Count, timestamp, _globalTags));
+            request.AddCounter(new DatadogCounter(_nameFormatter.Format(metricName.Name, _path), metric.Count, timestamp, _globalTags));
         }
 
         private void LogCounter(IRequest request, MetricName metricName, CounterMetric metric, long timestamp)
         {
-            request.AddCounter(new DatadogCounter(formatter.Format(metricName.Name, path), metric.Count, timestamp, _globalTags));
+            request.AddCounter(new DatadogCounter(_nameFormatter.Format(metricName.Name, _path), metric.Count, timestamp, _globalTags));
         }
 
         private void LogHistogram(IRequest request, MetricName metricName, HistogramMetric metric, long timestamp)
@@ -126,7 +127,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin
             LogGauge(request, metricName.Name + "." + HistogramMetrics.StdDev.GetDatadogName(), metric.StdDev, timestamp);
             LogGauge(request, metricName.Name + "." + HistogramMetrics.Count.GetDatadogName(), metric.SampleCount, timestamp);
 
-            double[] percentResults = metric.Percentiles(histogramPercentages);
+            double[] percentResults = metric.Percentiles(_histogramPercentages);
             LogGauge(request, metricName.Name + "." + HistogramMetrics.At75thPercentile.GetDatadogName(), percentResults[0], timestamp);
             LogGauge(request, metricName.Name + "." + HistogramMetrics.At95thPercentile.GetDatadogName(), percentResults[1], timestamp);
             LogGauge(request, metricName.Name + "." + HistogramMetrics.At98thPercentile.GetDatadogName(), percentResults[2], timestamp);
@@ -143,7 +144,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 
         private void LogGauge(IRequest request, string metricName, double value, long timestamp)
         {
-            request.AddGauge(new DatadogGauge(formatter.Format(metricName, path), value, timestamp, _globalTags));
+            request.AddGauge(new DatadogGauge(_nameFormatter.Format(metricName, _path), value, timestamp, _globalTags));
         }
     }
 }
