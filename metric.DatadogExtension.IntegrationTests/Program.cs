@@ -1,49 +1,70 @@
 ﻿using System;
 using System.Threading;
-using metric.DatadogPlugin;
+using GuaranteedRate.Metric.DatadogPlugin;
 using metrics;
 using metrics.Core;
-using metric.DatadogPlugin.Models;
+using GuaranteedRate.Metric.DatadogPlugin.Models;
+using GuaranteedRate.Metric.DatadogPlugin.Models.Transport;
+using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
+using GuaranteedRate.Metric.DatadogPlugin.Formatters;
+using System.Collections.Generic;
 
-namespace metric.DatadogExtension.IntegrationTests
+namespace GuaranteedRate.Metric.DatadogExtension.IntegrationTests
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var metrics = new Metrics();
-            DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
-            var reporter = new DataDogReporter(metrics, dataDogReporterConfigModel);
-            reporter.Start(5, TimeUnit.Seconds);
-
-            CounterMetric counter = metrics.Counter("test", "HealthMetrics.Test.SimpleCounter");
-            HistogramMetric histogramMetric = metrics.Histogram("test", "HealthMetrics.Test.HistogramMetrics");
-            GaugeMetric gaugeMetric = metrics.Gauge("test", "HealthMetrics.Test.GaugeMetrics", GetNumberOfUsersLoggedIn);
-            var rand = new Random(1);
-
-            int runs = 0;
-            while (runs < 1000)
+            try
             {
-                counter.Increment();
-                counter.Increment();
-                counter.Increment();
+                var metrics = new Metrics();
+                //DataDogReporterConfigModel dataDogReporterConfigModel = new DataDogReporterConfigModel("appdev", 8125, "ApplicationName", "DomainName", "Development");
 
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
-                histogramMetric.Update(rand.Next(100));
+                ITransport transport = new UdpTransport.Builder().WithPort(8125)
+                    .WithStatsdHost("appdev")
+                    .Build();
 
-                Thread.Sleep(5000);
+                string host = "hostName";
+                string environment = "testEnv";
+                string[] path = { "ApplicationName", "DomainName" };
 
-               runs++;
+                //IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
+                IMetricNameFormatter formatter = new AppendMetricNameToPathFormatter();
+
+                var reporter = new DataDogReporter(metrics, transport, formatter, environment, host, path);
+                reporter.Start(5, TimeUnit.Seconds);
+
+                CounterMetric counter = metrics.Counter("test", "CounterMetric");
+                HistogramMetric histogramMetric = metrics.Histogram("test", "HistogramMetric");
+                GaugeMetric gaugeMetric = metrics.Gauge("test", "GaugeMetric", GetNumberOfUsersLoggedIn);
+                var rand = new Random();
+
+                int runs = 0;
+                while (runs < 1000)
+                {
+                    System.Console.WriteLine("Loop " + (runs++) + " of 1000");
+                    counter.Increment();
+                    counter.Increment();
+                    counter.Increment();
+
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+                    histogramMetric.Update(rand.Next(100));
+
+                    Thread.Sleep(5000);
+                }
+            }
+            catch(Exception e)
+            {
+                throw;
             }
         }
 
         private static long GetNumberOfUsersLoggedIn()
         {
             var rand = new Random();
-
             return rand.Next(2000);
         }
     }
