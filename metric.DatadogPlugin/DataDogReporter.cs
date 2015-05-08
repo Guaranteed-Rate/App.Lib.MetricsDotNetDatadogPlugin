@@ -55,11 +55,20 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 
         public override void Run()
         {
-            IRequest request = this._transport.Prepare();
+            // swallow/log exceptions here because exceptions in Tasks don't bubble up to the calling application
+            // calling application must implement log4net
+            try
+            {
+                IRequest request = this._transport.Prepare();
 
-            long timestamp = (long)(DateTime.UtcNow.Subtract(_unixOffset).TotalSeconds);
+                long timestamp = (long)(DateTime.UtcNow.Subtract(_unixOffset).TotalSeconds);
 
-            TransformMetrics(request, _metrics, timestamp);
+                TransformMetrics(request, _metrics, timestamp);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error sending data: " + ex.Message);
+            }
         }
 
         /**

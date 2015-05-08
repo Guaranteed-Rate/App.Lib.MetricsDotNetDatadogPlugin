@@ -118,6 +118,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin.Models.Transport
                     // by subtracting the new value from the old. StatsD expects a relative
                     // counter, not an absolute!
                     readonlyValue = Math.Max(0, rawValue - _lastSeenCounters[readonlyMetricsSeenName]);
+                    _lastSeenCounters.Remove(readonlyMetricsSeenName);
                 }
                 // Store the last value we saw so that the next addCounter call can make
                 // the proper relative value

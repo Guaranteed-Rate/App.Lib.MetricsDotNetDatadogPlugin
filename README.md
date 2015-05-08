@@ -20,13 +20,16 @@ using GuaranteedRate.Metric.DatadogPlugin.Interfaces;
 using GuaranteedRate.Metric.DatadogPlugin.Formatters;
 using System.Collections.Generic;
 
-
 ...
+int port = 8125;
+string agentHost = "DataDogAgentHost"
+
 ITransport transport = new UdpTransport.Builder().WithPort(port)
-    .WithStatsdHost("appdev")
+    .WithStatsdHost(agentHost)
     .Build();
 
-string host = "hostName";
+Metrics metrics = new Metrics();
+string applicationHost = "hostName";
 string environment = "testEnv";
 string[] path = { "ApplicationName", "DomainName" };
 
