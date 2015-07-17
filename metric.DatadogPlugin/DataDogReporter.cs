@@ -5,10 +5,10 @@ using GuaranteedRate.Metric.DatadogPlugin.Models.Transport;
 using metrics;
 using metrics.Core;
 using metrics.Reporting;
-using NUnit.Framework;
 using StatsdClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 /**
  * This code is a C# translation of https://github.com/coursera/metrics-datadog
  * built to work with the C# translation of metrics https://github.com/danielcrenna/metrics-net
@@ -32,7 +32,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin
         private readonly IMetricNameFormatter _nameFormatter;
 
         public DataDogReporter(Metrics metrics, ITransport transport, IMetricNameFormatter formatter, IDictionary<string, string> globalTags, string[] path)
-            : base(new TextMessageWriter(), metrics)
+            : base(null, metrics)
         {
             _metrics = metrics;
             _globalTags = globalTags;
@@ -42,7 +42,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin
         }
 
         public DataDogReporter(Metrics metrics, ITransport transport, IMetricNameFormatter formatter, string environment, string host, string[] path)
-            : base(new TextMessageWriter(), metrics)
+            : base(null, metrics)
         {
             _metrics = metrics;
             _path = path;

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GuaranteedRate.Metrics.DatadogPlugin</RootNamespace>
-    <AssemblyName>metric.DatadogPlugin</AssemblyName>
+    <AssemblyName>GuaranteedRate.Metric.DatadogPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -38,26 +38,6 @@
     <Reference Include="metrics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca6c6ef570198eba, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Metrics.1.0.12\lib\net40\metrics.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.core">
-      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="nunit.core.interfaces">
-      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.util">
-      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="NUnit.VisualStudio.TestAdapter">
-      <HintPath>..\packages\NUnitTestAdapter.1.2\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="StatsdClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f641b6aa3c3157d1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
