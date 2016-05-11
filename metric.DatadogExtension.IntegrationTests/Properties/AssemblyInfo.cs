@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("metric.DatadogExtension.IntegrationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("GuaranteedRate")]
+[assembly: AssemblyCompany("Guaranteed Rate")]
 [assembly: AssemblyProduct("metric.DatadogExtension.IntegrationTests")]
-[assembly: AssemblyCopyright("Copyright © GuaranteedRate 2016")]
+[assembly: AssemblyCopyright("Copyright © Guaranteed Rate 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
