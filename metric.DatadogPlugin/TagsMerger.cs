@@ -8,8 +8,6 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 {
     static class TagsMerger
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("TagsMerger");
-
         private static readonly string[] _tagDelim = { ":" };
 
         /// <summary>
@@ -55,7 +53,7 @@ namespace GuaranteedRate.Metric.DatadogPlugin
             string[] strs = tag.Split(_tagDelim, StringSplitOptions.RemoveEmptyEntries);
             if (strs.Length != 2)
             {
-                Log.Warn("Invalid tag: " + tag);
+                throw new Exception(string.Format("Invalid Tag Format: {0}. Expected format \"key:value\" ", tag));
             }
             else
             {

@@ -18,8 +18,6 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 {
     public class DataDogReporter : ReporterBase
     {
-
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger("DataDogReporter");
         public const string ENVIRONMENT_TAG = "environment";
         public const string HOST_TAG = "host";
 
@@ -56,7 +54,6 @@ namespace GuaranteedRate.Metric.DatadogPlugin
         public override void Run()
         {
             // swallow/log exceptions here because exceptions in Tasks don't bubble up to the calling application
-            // calling application must implement log4net
             try
             {
                 IRequest request = this._transport.Prepare();
@@ -65,9 +62,9 @@ namespace GuaranteedRate.Metric.DatadogPlugin
 
                 TransformMetrics(request, _metrics, timestamp);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Log.Error("Error sending data: " + ex.Message);
+                // Intentionally left blank.
             }
         }
 
@@ -97,10 +94,6 @@ namespace GuaranteedRate.Metric.DatadogPlugin
                 else if (dictEntry.Value is GaugeMetric)
                 {
                     LogGauge(request, dictEntry.Key, (GaugeMetric)dictEntry.Value, timestamp);
-                }
-                else
-                {
-                    Log.InfoFormat("Unknown metric type {}, not sending", dictEntry.Value.GetType());
                 }
             }
             return request;
